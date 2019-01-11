@@ -13,5 +13,6 @@ export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
 export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
 export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
 export const ADD_NEW_PROFILE = 'boilerplate/App/ADD_NEW_PROFILE';
-export const ADD_NEW_PROFILE_SUCCESS = 'boilerplate/App/ADD_NEW_PROFILE_SUCCESS';
+export const ADD_NEW_PROFILE_SUCCESS =
+  'boilerplate/App/ADD_NEW_PROFILE_SUCCESS';
 export const ADD_NEW_PROFILE_ERROR = 'boilerplate/App/ADD_NEW_PROFILE_ERROR';

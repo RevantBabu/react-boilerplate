@@ -5,7 +5,11 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LOAD_REPOS } from 'containers/App/constants';
 import { ADD_NEW_PROFILE } from 'containers/App/constants';
-import { reposLoaded, repoLoadingError, addNewProfileSuccess } from 'containers/App/actions';
+import {
+  reposLoaded,
+  repoLoadingError,
+  addNewProfileSuccess,
+} from 'containers/App/actions';
 
 import request from 'utils/request';
 import { makeSelectUsername } from 'containers/HomePage/selectors';
@@ -16,7 +20,7 @@ import { makeSelectUsername } from 'containers/HomePage/selectors';
 export function* getRepos() {
   // Select username from store
   const username = yield select(makeSelectUsername());
-  //const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
+  // const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
   const requestURL = `/api/users`;
 
   try {
@@ -28,11 +32,10 @@ export function* getRepos() {
   }
 }
 
-
 export function* addNewProfile() {
   // Select username from store
   const username = yield select(makeSelectUsername());
-  //const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
+  // const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
   const requestURL = `/api/addusers`;
 
   try {

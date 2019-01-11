@@ -58,10 +58,7 @@ export class HomePage extends React.PureComponent {
       <article>
         <Helmet>
           <title>Home Page</title>
-          <meta
-            name="description"
-            content="Sentiment analysis homepage"
-          />
+          <meta name="description" content="Sentiment analysis homepage" />
         </Helmet>
         <div>
           <CenteredSection>
@@ -96,13 +93,13 @@ export class HomePage extends React.PureComponent {
 
           <Section>
             <H2>
-              <FormattedMessage id={"Create new Profile"} />
+              <FormattedMessage id="Create new Profile" />
             </H2>
             <Form onSubmit={this.props.onSubmitNewUsername}>
               <label htmlFor="newprofile">
-                <FormattedMessage id={"select userId for profile and enter to submit"} />
+                <FormattedMessage id="select userId for profile and enter to submit" />
                 <AtPrefix>
-                  <FormattedMessage id={"@"} />
+                  <FormattedMessage id="@" />
                 </AtPrefix>
                 <Input
                   id="profile"
@@ -113,7 +110,7 @@ export class HomePage extends React.PureComponent {
                 />
               </label>
             </Form>
-            {/*<ReposList {...reposListProps} />*/}
+            {/* <ReposList {...reposListProps} /> */}
           </Section>
         </div>
       </article>

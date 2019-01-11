@@ -25,7 +25,7 @@ function homeReducer(state = initialState, action) {
     case CHANGE_USERNAME:
       // Delete prefixed '@' from the github username
       return state.set('username', action.name.replace(/@/gi, ''));
-  	case NEW_USERNAME:
+    case NEW_USERNAME:
       // Delete prefixed '@' from the github username
       return state.set('newusername', action.name.replace(/@/gi, ''));
     default:

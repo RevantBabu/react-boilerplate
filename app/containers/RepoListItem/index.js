@@ -20,15 +20,15 @@ import Wrapper from './Wrapper';
 export class RepoListItem extends React.PureComponent {
   render() {
     const { item } = this.props;
-    let nameprefix = '';
+    const nameprefix = '';
 
     // If the repository is owned by a different person than we got the data for
     // it's a fork and we should show the name of the owner
-    
+
     // Put together the content of the repository
     const content = (
       <Wrapper>
-        <RepoLink href={"/user/" + item.name}>
+        <RepoLink href={`/user/${item.name}`}>
           {item.name}
           {item.pos}
           {item.neg}

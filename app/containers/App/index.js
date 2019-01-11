@@ -31,19 +31,16 @@ const AppWrapper = styled.div`
 export default function App() {
   return (
     <AppWrapper>
-      <Helmet
-        titleTemplate="%s - SentiMeter"
-        defaultTitle="SentiMeter"
-      >
+      <Helmet titleTemplate="%s - SentiMeter" defaultTitle="SentiMeter">
         <meta name="description" content="Sentiment analyasis and tracking" />
       </Helmet>
-      {/*<Header />*/}
+      {/* <Header /> */}
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/user/:userId" component={FeaturePage}/>
+        <Route path="/user/:userId" component={FeaturePage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
-      {/*<Footer />*/}
+      {/* <Footer /> */}
       <GlobalStyle />
     </AppWrapper>
   );
