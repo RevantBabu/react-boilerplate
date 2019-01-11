@@ -10,20 +10,20 @@ export const scope = 'boilerplate.containers.HomePage';
 export default defineMessages({
   startProjectHeader: {
     id: `${scope}.start_project.header`,
-    defaultMessage: 'Start your next react project in seconds',
+    defaultMessage: 'Sentiment analysis and trackig',
   },
   startProjectMessage: {
     id: `${scope}.start_project.message`,
     defaultMessage:
-      'A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices',
+      'Search below to find a user or entity to track and update their sentiment profile',
   },
   trymeHeader: {
     id: `${scope}.tryme.header`,
-    defaultMessage: 'Try me!',
+    defaultMessage: 'Search!',
   },
   trymeMessage: {
     id: `${scope}.tryme.message`,
-    defaultMessage: 'Show Github repositories by',
+    defaultMessage: 'Show sentiment for profile',
   },
   trymeAtPrefix: {
     id: `${scope}.tryme.atPrefix`,

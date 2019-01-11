@@ -17,6 +17,16 @@ const app = express();
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
 
+app.get("/api/users", (req, res) => {
+  users = [{"name": "u1", "pos": 5, "neg": 1}, {"name": "u2", "pos": 15, "neg": 17}];
+  res.send(users);
+})
+
+app.get("/api/addusers", (req, res) => {
+  users = [{"name": "u3", "pos": 5, "neg": 1}, {"name": "u4", "pos": 15, "neg": 17}];
+  res.send(users);
+})
+
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),

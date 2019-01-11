@@ -28,7 +28,9 @@ import Input from './Input';
 import Section from './Section';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
+import { addNewProfile } from '../App/actions';
 import { changeUsername } from './actions';
+import { newUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -58,7 +60,7 @@ export class HomePage extends React.PureComponent {
           <title>Home Page</title>
           <meta
             name="description"
-            content="A React.js Boilerplate application homepage"
+            content="Sentiment analysis homepage"
           />
         </Helmet>
         <div>
@@ -83,13 +85,35 @@ export class HomePage extends React.PureComponent {
                 <Input
                   id="username"
                   type="text"
-                  placeholder="mxstbr"
+                  placeholder="existingUserId"
                   value={this.props.username}
                   onChange={this.props.onChangeUsername}
                 />
               </label>
             </Form>
             <ReposList {...reposListProps} />
+          </Section>
+
+          <Section>
+            <H2>
+              <FormattedMessage id={"Create new Profile"} />
+            </H2>
+            <Form onSubmit={this.props.onSubmitNewUsername}>
+              <label htmlFor="newprofile">
+                <FormattedMessage id={"select userId for profile and enter to submit"} />
+                <AtPrefix>
+                  <FormattedMessage id={"@"} />
+                </AtPrefix>
+                <Input
+                  id="profile"
+                  type="text"
+                  placeholder="newUserId"
+                  value={this.props.newUsername}
+                  onChange={this.props.onNewUsername}
+                />
+              </label>
+            </Form>
+            {/*<ReposList {...reposListProps} />*/}
           </Section>
         </div>
       </article>
@@ -102,16 +126,23 @@ HomePage.propTypes = {
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   onSubmitForm: PropTypes.func,
+  onSubmitNewUsername: PropTypes.func,
   username: PropTypes.string,
   onChangeUsername: PropTypes.func,
+  onNewUsername: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
+    onNewUsername: evt => dispatch(newUsername(evt.target.value)),
     onSubmitForm: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
+    },
+    onSubmitNewUsername: evt => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(addNewProfile());
     },
   };
 }
