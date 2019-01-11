@@ -3,47 +3,48 @@
  */
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { LOAD_REPOS } from 'containers/App/constants';
-import { ADD_NEW_PROFILE } from 'containers/App/constants';
+import { SEARCH_USERNAME, ADD_USERNAME } from './constants';
 import {
-  reposLoaded,
-  repoLoadingError,
-  addNewProfileSuccess,
-} from 'containers/App/actions';
+  searchUsernameSuccess,
+  searchUsernameError,
+  addUsernameSuccess,
+  addUsernameError
+} from './actions';
 
 import request from 'utils/request';
-import { makeSelectUsername } from 'containers/HomePage/selectors';
+import { makeSelectSearchusername } from 'containers/HomePage/selectors';
+import { makeSelectNewusername } from 'containers/HomePage/selectors';
 
 /**
  * Github repos request/response handler
  */
-export function* getRepos() {
+export function* getUsers() {
   // Select username from store
-  const username = yield select(makeSelectUsername());
+  const username = yield select(makeSelectSearchusername());
   // const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-  const requestURL = `/api/users`;
+  const requestURL = "/api/users/" + username;
 
   try {
     // Call our request helper (see 'utils/request')
-    const repos = yield call(request, requestURL);
-    yield put(reposLoaded(repos, username));
+    const users = yield call(request, requestURL);
+    yield put(searchUsernameSuccess(users, username));
   } catch (err) {
-    yield put(repoLoadingError(err));
+    yield put(searchUsernameError(err));
   }
 }
 
-export function* addNewProfile() {
+export function* addUser() {
   // Select username from store
-  const username = yield select(makeSelectUsername());
-  // const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-  const requestURL = `/api/addusers`;
+  const username = yield select(makeSelectNewusername());
 
   try {
-    // Call our request helper (see 'utils/request')
-    const repos = yield call(request, requestURL);
-    yield put(addNewProfileSuccess(repos, username));
+    const result = yield call(() => request("/api/addusers/" + username, {
+        method: "POST",
+        body: JSON.stringify({"username": username}),
+    }));
+    yield put(addUsernameSuccess(result.userCreated, username));
   } catch (err) {
-    yield put(repoLoadingError(err));
+    yield put(addUsernameError(err));
   }
 }
 
@@ -55,6 +56,6 @@ export default function* githubData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
-  yield takeLatest(LOAD_REPOS, getRepos);
-  yield takeLatest(ADD_NEW_PROFILE, addNewProfile);
+  yield takeLatest(SEARCH_USERNAME, getUsers);
+  yield takeLatest(ADD_USERNAME, addUser);
 }

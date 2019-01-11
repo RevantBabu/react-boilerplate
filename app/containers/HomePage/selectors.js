@@ -7,7 +7,27 @@ import { initialState } from './reducer';
 
 const selectHome = state => state.get('home', initialState);
 
-const makeSelectUsername = () =>
-  createSelector(selectHome, homeState => homeState.get('username'));
+const makeSelectSearchusername = () =>
+  createSelector(selectHome, homeState => homeState.get('searchusername'));
 
-export { selectHome, makeSelectUsername };
+const makeSelectNewusername = () =>
+  createSelector(selectHome, homeState => homeState.get('newusername'));
+
+const makeSelectUsers = () =>
+  createSelector(selectHome, homeState => homeState.get('users'));
+
+const makeSelectSearchError = () =>
+  createSelector(selectHome, homeState => homeState.get('searchError'));
+
+const makeSelectAddStatus = () =>
+  createSelector(selectHome, homeState => homeState.get('addStatus'));
+
+const makeSelectAddTried = () =>
+  createSelector(selectHome, homeState => homeState.get('addTried'));
+
+const makeSelectAddError = () =>
+  createSelector(selectHome, homeState => homeState.get('addError'));
+
+
+export { selectHome, makeSelectSearchusername, makeSelectNewusername, makeSelectUsers, makeSelectSearchError,
+			makeSelectAddStatus, makeSelectAddTried, makeSelectAddError };

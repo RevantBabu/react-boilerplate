@@ -15,10 +15,9 @@ import { createStructuredSelector } from 'reselect';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError,
-} from 'containers/App/selectors';
+  makeSelectSearchusername, makeSelectNewusername, makeSelectUsers, makeSelectSearchError,
+  makeSelectAddStatus, makeSelectAddTried, makeSelectAddError
+} from './selectors';
 import H2 from 'components/H2';
 import ReposList from 'components/ReposList';
 import AtPrefix from './AtPrefix';
@@ -27,13 +26,17 @@ import Form from './Form';
 import Input from './Input';
 import Section from './Section';
 import messages from './messages';
+import { changeSearchusername, changeNewusername, searchUsername, addUsername } from './actions';
+import reducer from './reducer';
+import saga from './saga';  
+
+import {
+  makeSelectRepos,
+  makeSelectLoading,
+  makeSelectError,
+} from 'containers/App/selectors';
 import { loadRepos } from '../App/actions';
 import { addNewProfile } from '../App/actions';
-import { changeUsername } from './actions';
-import { newUsername } from './actions';
-import { makeSelectUsername } from './selectors';
-import reducer from './reducer';
-import saga from './saga';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.PureComponent {
@@ -41,18 +44,18 @@ export class HomePage extends React.PureComponent {
    * when initial state username is not null, submit the form to load repos
    */
   componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
+    /*if (this.props.username && this.props.username.trim().length > 0) {
       this.props.onSubmitForm();
-    }
+    }*/
   }
 
   render() {
-    const { loading, error, repos } = this.props;
-    const reposListProps = {
+    const { addStatus, addTried, addError, searchError, users } = this.props;
+    /*const reposListProps = {
       loading,
       error,
       repos,
-    };
+    };*/
 
     return (
       <article>
@@ -83,12 +86,19 @@ export class HomePage extends React.PureComponent {
                   id="username"
                   type="text"
                   placeholder="existingUserId"
-                  value={this.props.username}
-                  onChange={this.props.onChangeUsername}
+                  value={this.props.searchusername}
+                  onChange={this.props.onSearchUsername}
                 />
               </label>
             </Form>
-            <ReposList {...reposListProps} />
+            {/*<ReposList {...users} />*/}
+            <div>
+              {this.props.users.map((item, index) => (
+                <li key={index}>
+                    <a href={`/user/${item.name}`}>{item.name}</a>
+                </li>
+              ))}
+            </div>
           </Section>
 
           <Section>
@@ -105,12 +115,22 @@ export class HomePage extends React.PureComponent {
                   id="profile"
                   type="text"
                   placeholder="newUserId"
-                  value={this.props.newUsername}
-                  onChange={this.props.onNewUsername}
+                  value={this.props.newusername}
+                  onChange={this.props.onAddUsername}
                 />
               </label>
             </Form>
-            {/* <ReposList {...reposListProps} /> */}
+            <div>
+            {
+              this.props.addTried &&
+              (this.props.addStatus  && 
+                <p>user created. access: <a href={`/user/${this.props.newusername}`}>{this.props.newusername}</a></p>)
+            }
+            {
+              this.props.addTried &&
+              (!addStatus && <p>user already exists.Try different id</p>)
+            }
+            </div>
           </Section>
         </div>
       </article>
@@ -119,36 +139,41 @@ export class HomePage extends React.PureComponent {
 }
 
 HomePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  addStatus: PropTypes.bool,
+  addTried: PropTypes.bool,
+  addError: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  searchError: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onSubmitForm: PropTypes.func,
   onSubmitNewUsername: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func,
-  onNewUsername: PropTypes.func,
+  searchusername: PropTypes.string,
+  newusername: PropTypes.string,
+  onSearchUsername: PropTypes.func,
+  onAddUsername: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    onNewUsername: evt => dispatch(newUsername(evt.target.value)),
+    onSearchUsername: evt => dispatch(changeSearchusername(evt.target.value)),
+    onAddUsername: evt => dispatch(changeNewusername(evt.target.value)),
     onSubmitForm: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
+      dispatch(searchUsername());
     },
     onSubmitNewUsername: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(addNewProfile());
+      dispatch(addUsername());
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+  searchusername: makeSelectSearchusername(),
+  newusername: makeSelectNewusername(),
+  users: makeSelectUsers(),
+  searchError: makeSelectError(),
+  addStatus: makeSelectAddStatus(),
+  addTried: makeSelectAddTried(),
+  addError: makeSelectAddError(),
 });
 
 const withConnect = connect(
