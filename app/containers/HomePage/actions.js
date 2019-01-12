@@ -15,7 +15,12 @@
  *    }
  */
 
-import { CHANGE_USERNAME } from './constants';
+import { CHANGE_SEARCHUSERNAME } from './constants';
+import { CHANGE_NEWUSERNAME } from './constants';
+import {
+  SEARCH_USERNAME, SEARCH_USERNAME_SUCCESS, SEARCH_USERNAME_ERROR,
+  ADD_USERNAME, ADD_USERNAME_SUCCESS, ADD_USERNAME_ERROR,
+} from './constants';
 
 /**
  * Changes the input field of the form
@@ -24,9 +29,59 @@ import { CHANGE_USERNAME } from './constants';
  *
  * @return {object}    An action object with a type of CHANGE_USERNAME
  */
-export function changeUsername(name) {
+export function changeSearchusername(name) {
   return {
-    type: CHANGE_USERNAME,
+    type: CHANGE_SEARCHUSERNAME,
     name,
+  };
+}
+
+export function changeNewusername(name) {
+  return {
+    type: CHANGE_NEWUSERNAME,
+    name,
+  };
+}
+
+export function searchUsername() {
+  return {
+    type: SEARCH_USERNAME,
+  };
+}
+
+export function searchUsernameSuccess(users, searchusername) {
+  return {
+    type: SEARCH_USERNAME_SUCCESS,
+    users,
+    searchusername,
+  };
+}
+
+export function searchUsernameError(error) {
+  return {
+    type: SEARCH_USERNAME_ERROR,
+    error
+  };
+}
+
+
+export function addUsername() {
+  return {
+    type: ADD_USERNAME,
+  };
+}
+
+export function addUsernameSuccess(status, addusername) {
+  return {
+    type: ADD_USERNAME_SUCCESS,
+    status,
+    addusername,
+  };
+}
+
+export function addUsernameError(error) {
+  return {
+    type: ADD_USERNAME_ERROR,
+    error
   };
 }
