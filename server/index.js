@@ -19,6 +19,44 @@ const app = express();
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
 
+app.get('/api/stats/:username', (req, res) => {
+  MongoClient.connect(dburl, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("maindb");
+    console.log(req.params.username);
+    var plus, minus;
+    var queryPlus = {"name": req.params.username, "sentiment.type": "plus"};
+    var queryMinus = {"name": req.params.username, "sentiment.type": "minus"};
+    dbo.collection("sentiments").count(queryPlus, function(err, result) {
+      if (err) throw err;
+      plus = result;
+      dbo.collection("sentiments").count(queryMinus, function(err, result) {
+        if (err) throw err;
+        res.send({"plus": plus, "minus": result});
+        db.close();
+      })
+    });
+  });
+});
+
+app.post('/api/addsentiment/:username/:sentiment', (req, res) => {
+  MongoClient.connect(dburl, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("maindb");
+    console.log(req.params.username);
+    const sentiment = {
+      "type": req.params.sentiment,
+      "timestamp": new Date()
+    };
+    console.log(sentiment);
+    dbo.collection("sentiments").insertOne({"name": req.params.username, "sentiment": sentiment}, function(err, res1) {
+      if (err) throw err;
+      res.send({"userCreated": true, "name": req.params.username});
+      db.close();
+    });
+  });
+});
+
 app.get('/api/users/:username', (req, res) => {
   users = [{ name: 'u1', pos: 5, neg: 1 }, { name: 'u2', pos: 15, neg: 17 }];
 
@@ -48,7 +86,7 @@ app.post('/api/addusers/:username', (req, res) => {
       if ((result || []).length > 0) {
         res.send({"userExists": true, "userCreated": false});
       } else {
-        dbo.collection("users").insertOne({"name": req.params.username, "sentimets": []}, function(err, res1) {
+        dbo.collection("users").insertOne({"name": req.params.username}, function(err, res1) {
           if (err) throw err;
           res.send({"userCreated": true, "name": req.params.username});
         });
