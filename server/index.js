@@ -24,16 +24,29 @@ app.get('/api/stats/:username', (req, res) => {
     if (err) throw err;
     var dbo = db.db("maindb");
     console.log(req.params.username);
-    var plus, minus;
+    var plus, minus, plusD, minusD;
+    var ts = new Date();
+    ts.setDate(ts.getDate()-1);
     var queryPlus = {"name": req.params.username, "sentiment.type": "plus"};
     var queryMinus = {"name": req.params.username, "sentiment.type": "minus"};
+    var queryPlusD = {"name": req.params.username, "sentiment.type": "plus",  "sentiment.timestamp": {"$gt": ts}};
+    var queryMinusD = {"name": req.params.username, "sentiment.type": "minus", "sentiment.timestamp": {"$gt": ts}};
     dbo.collection("sentiments").count(queryPlus, function(err, result) {
       if (err) throw err;
       plus = result;
       dbo.collection("sentiments").count(queryMinus, function(err, result) {
         if (err) throw err;
-        res.send({"plus": plus, "minus": result});
-        db.close();
+        minus = result;
+        dbo.collection("sentiments").count(queryPlusD, function(err, result) {
+          if (err) throw err;
+          plusD = result;
+          dbo.collection("sentiments").count(queryMinusD, function(err, result) {
+            if (err) throw err;
+            minusD = result;
+            res.send({"plus": plus, "minus": minus, "plusD": plusD, "minusD": minusD});
+            db.close();
+          });
+        });
       })
     });
   });

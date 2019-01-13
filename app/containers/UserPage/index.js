@@ -98,7 +98,7 @@ export class UserPage extends React.PureComponent {
                 <div>
                   <b>{"HISTORIC COUNT"}</b>
                   <b style={{"color": "#4CAF50", "margin": "10px"}}>{"+" + this.props.userStats.plus + "      "}</b>
-                  <b style={{"color": "#f44336", "margin": "10px"}}>{"+" + this.props.userStats.minus}</b>
+                  <b style={{"color": "#f44336", "margin": "10px"}}>{"-" + this.props.userStats.minus}</b>
                 </div>
               }
             </div>
@@ -111,6 +111,19 @@ export class UserPage extends React.PureComponent {
               {" - "}
               </button>
             </b>
+            <H2>
+              {"TRENDS"}
+            </H2>
+            <div>
+              {
+                this.props.userStats && 
+                <div>
+                  <b>{"LAST DAY COUNT"}</b>
+                  <b style={{"color": "#4CAF50", "margin": "10px"}}>{"+" + this.props.userStats.plusD + "      "}</b>
+                  <b style={{"color": "#f44336", "margin": "10px"}}>{"-" + this.props.userStats.minusD}</b>
+                </div>
+              }
+            </div>
             <p><b><a href={`/`}>Go Back To HomePage</a></b></p>
           </CenteredSection>
         </div>
